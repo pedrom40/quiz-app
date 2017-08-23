@@ -1,13 +1,40 @@
-body {
-  font-family:"Roboto", sans-serif;
-  color:#252525;
-}
+/* general styles */
+.step-indicator {list-style:none; width:375px; margin:25px auto; padding:0; background:url(../img/blk-pixel.gif) center repeat-x;}
+  .step-indicator li {display:inline-block; margin-right:40px; padding:10px 15px; border:solid 1px #000; border-radius:50%; background:white;}
+  .step-indicator li:last-child {margin-right:0;}
+.quick-links {margin:25px auto; text-align:center;}
+  .quick-links a {margin:0 25px;}
 
-header {
-  margin-bottom:40px;
-  background:#ccc;
-}
+/* init settings */
+.questions-view, .feedback-view {display:none;}
 
-img {
-	width:100%;
+/* starting view */
+.starting-view {width:250px; margin:50px auto;}
+  .starting-view select {width:100%;}
+
+/* questions view */
+.questions-view, .feedback-view {width:500px; margin:50px auto;}
+  .questions-view .answer-img {float:left; display:inline-block; margin-right:25px;}
+    .questions-view .answer-img p {margin:15px 0 25px;}
+  .questions-view h3, .feedback-view h3 {margin:45px auto;}
+  .questions-form .question-group {min-height:225px;}
+    .questions-form .radio {margin-bottom:15px;}
+  .questions-form .submit-btn input {width:100%;}
+
+/* feedback view */
+.feedback-view .results {margin-bottom:40px;}
+  .feedback-view .results .description {font-size:16px; line-height:26px;}
+.feedback-view .progress {height:70px; width:150px; margin:0 auto;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+  .feedback-view .progress .progress-bar span {display:inline-block; width:50%; margin-top:16px;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  }

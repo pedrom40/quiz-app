@@ -1,3 +1,8 @@
 'use strict';
 
-console.log("Hello console");
+// calls all other functions
+function initApp(){
+  console.log('app initiated');
+}
+
+$(initApp)
