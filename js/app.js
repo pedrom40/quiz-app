@@ -57,7 +57,6 @@ const questions = [
 // calls all other functions
 function initApp () {
   loadThemes();
-  onThemeSelect();
 }
 
 // loads available themes
@@ -68,80 +67,12 @@ function loadThemes () {
     createThemeOptions(theme, currentIndex);
   });
 
-}
+  onThemeSelect();
 
-// hides starting view, shows question view
-function openQuestionsView () {
-  $('.starting-view').fadeOut('fast');
-  $('.questions-view').fadeIn('fast');
-
-  loadQuestions();
-}
-
-// load current set of questions
-function loadQuestions () {
-
-  // setup question HTML
-  questions[currentTheme].map( (question, currentIndex) => {
-
-    // setup step indicator
-    setupStepIndicator(currentIndex);
-
-    // setup main question text
-    setupQuestionText();
-
-    // setup images and answers
-    setupAnswers(question);
-
-  });
-
-}
-
-// setup step indicator
-function setupStepIndicator (currentIndex) {
-  $('.step-indicator').append(`
-    <li>${currentIndex + 1}</li>
-  `);
-}
-
-// setup question
-function setupQuestionText () {
-  $('.questions-view h3 span').text(themes[currentTheme].slice(0, -1));
-}
-
-// setup question answers
-function setupAnswerRadioBtns (wordOptions) {
-  let radioOptions = '';
-
-  wordOptions.map( (option, currentIndex) => {
-    radioOptions = radioOptions + `<div class="radio"><label><input type="radio" name="answer" id="${option}${currentIndex}" value="${option}"> ${option}</label></div>`;
-  });
-
-  return radioOptions;
-}
-
-// setup question aswer options
-function setupAnswers (question) {
-  $('.questions-block').append(`
-    <form class="questions-form">
-
-      <div class="question-group">
-        <div class="answer-img">
-          <img src="${question.imgSrc}" alt="${question.imgAlt}">
-          <p>${question.hint}</p>
-        </div>
-        ${setupAnswerRadioBtns(question.wordOptions)}
-        <div class="submit-btn">
-          <input type="submit" value="Select" class="btn btn-primary">
-        </div>
-      </div>
-
-    </form>
-  `);
 }
 
 // adds themes to options of theme select menu
-function createThemeOptions(theme, currentIndex){
+function createThemeOptions (theme, currentIndex) {
 
   // populate theme select menu
   $('#selectTheme').append(`
@@ -158,6 +89,124 @@ function onThemeSelect () {
     openQuestionsView();
 
   });
+}
+
+// hides starting view, shows question view
+function openQuestionsView () {
+  $('.starting-view').fadeOut(function () {
+
+    $('.questions-view').fadeIn(function () {
+      loadQuestions();
+    });
+
+  });
+}
+
+// load current set of questions
+function loadQuestions () {
+
+  // setup question HTML
+  questions[currentTheme].map( (question, currentIndex) => {
+
+    // setup step indicator
+    setupStepIndicator(currentIndex);
+
+    // setup main question text
+    setupQuestionText();
+
+    // setup images and answers
+    setupAnswers(question, currentIndex);
+
+  });
+
+  listenForAnswer();
+
+}
+
+// setup step indicator
+function setupStepIndicator (currentIndex) {
+  $('.step-indicator').append(`
+    <li>${currentIndex + 1}</li>
+  `);
+}
+
+// setup question
+function setupQuestionText () {
+  $('.questions-view h3 span').text(themes[currentTheme].slice(0, -1));
+}
+
+// setup question aswer options
+function setupAnswers (question, currentIndex) {
+
+  // if first question, show
+  let questionClass = '';
+  if (currentIndex !== 0){
+    questionClass = ' hide';
+  }
+
+  $('.questions-block').append(`
+    <form class="questions-form${questionClass}">
+
+      <div class="row question-group">
+        <div class="col-lg-6 answer-img">
+          <img src="${question.imgSrc}" alt="${question.imgAlt}">
+          <p>${question.hint}</p>
+        </div>
+        <div class="col-lg-6">
+          ${setupAnswerBtns(currentIndex, question.wordOptions)}
+        </div>
+      </div>
+    </form>
+  `);
+
+}
+
+// setup question answers
+function setupAnswerBtns (questionIndex, wordOptions) {
+  let radioOptions = '';
+
+  wordOptions.map( (option, currentIndex) => {
+    radioOptions = radioOptions + `<input type="button" id="${questionIndex}-${currentIndex}" value="${option}" class="btn btn-primary btn-lg btn-block">`;
+  });
+
+  return radioOptions;
+}
+
+// listen for answers
+function listenForAnswer () {
+
+  $('.questions-block').click( event => {
+
+    // save id and value of selected radio button
+    const questionOption = event.target.id.toString().split('-');
+    const selectedAnswer = event.target.value.toString();
+
+    // correct answer
+    const correctAnswer = questions[currentTheme][questionOption[0]].word.toString();
+
+    // check answer
+    if (selectedAnswer === correctAnswer){
+      answeredCorrectly(questions[currentTheme][questionOption[0]], correctAnswer);
+    }
+    else {
+      answeredIncorrectly(questions[currentTheme][questionOption[0]], event.target.id);
+    }
+
+  });
+
+}
+
+// when correct answer is selected
+function answeredCorrectly (questionSet, selectedAnswer) {
+  console.log(`${selectedAnswer} is correct :)`);
+}
+
+// when incorrect answer is selected
+function answeredIncorrectly (questionSet, selectedAnswer) {
+
+  // hide incorrect answer
+  $(`#${selectedAnswer}`).prop('disabled', true);
+
 }
 
 $(initApp)

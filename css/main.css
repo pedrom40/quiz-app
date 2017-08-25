@@ -14,7 +14,6 @@
 
 /* questions view */
 .questions-view, .feedback-view {width:500px; margin:50px auto;}
-  .questions-view .answer-img {float:left; display:inline-block; margin-right:25px;}
     .questions-view .answer-img p {margin:15px 0 25px;}
   .questions-view h3, .feedback-view h3 {margin:45px auto;}
   .questions-form .question-group {min-height:225px;}
