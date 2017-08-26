@@ -212,14 +212,57 @@ function listenForAnswer () {
 
 // when correct answer is selected
 function answeredCorrectly (questionSet, selectedAnswer) {
-  console.log(`${selectedAnswer} is correct :)`);
+
+  // open modal, set content to true for correct answer
+  $('#answerModal').modal().show(function () {
+    setModalContent(true, selectedAnswer);
+  });
+
 }
 
 // when incorrect answer is selected
 function answeredIncorrectly (questionSet, selectedAnswer) {
 
+  // open modal, set content to true for correct answer
+  $('#answerModal').modal().show(function () {
+    setModalContent(false, selectedAnswer);
+  });
+
   // hide incorrect answer
   $(`#${selectedAnswer}`).prop('disabled', true);
+
+}
+
+// set content for modal based on answer
+function setModalContent (answer, selectedAnswer) {
+
+  // correct answer options
+  const correctAnswerTitles = ["You're Awesome!", "Nailed It!", "You're Too Good!", "Can't Fool You!"];
+
+  // set incorrect answer options
+  const incorrectAnswerTitles = ["So Close!", "Not Quite, Try Again", "I'll Pretend I Didn't See That...", "Really? Is That Your Answer?"];
+
+  // if correct answer
+  if (answer) {
+
+    $('.modal-title').html(correctAnswerTitles[getRandomNumber(correctAnswerTitles.length)]);
+    $('.modal-body').html(`
+      <p><strong>"${selectedAnswer}" is correct!</strong> Move on to the next question and keep up the good work!</p>
+    `);
+    $('.js-continue-btn').html(`Next Question`);
+
+  }
+
+  // if wrong answer
+  else {
+
+    $('.modal-title').html(incorrectAnswerTitles[getRandomNumber(incorrectAnswerTitles.length)]);
+    $('.modal-body').html(`
+      <p>Sorry, <strong>"${$('#'+selectedAnswer).val()}"</strong> is not correct. Shake it off and try again!</p>
+    `);
+    $('.js-continue-btn').html(`Try Again`);
+
+  }
 
 }
 
@@ -230,6 +273,11 @@ function listenForStartOverClick () {
     location.reload();
   });
 
+}
+
+// generate random number
+function getRandomNumber (rangeNumber) {
+  return Math.floor(Math.random() * rangeNumber);
 }
 
 $(initApp)
