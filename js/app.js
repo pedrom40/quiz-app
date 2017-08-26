@@ -121,6 +121,8 @@ function loadQuestions () {
 
   listenForAnswer();
 
+  listenForStartOverClick();
+
 }
 
 // setup step indicator
@@ -150,7 +152,7 @@ function setupAnswers (question, currentIndex) {
       <div class="row question-group">
         <div class="col-lg-6 answer-img">
           <img src="${question.imgSrc}" alt="${question.imgAlt}">
-          <p>${question.hint}</p>
+          <p id="js-hint-${currentIndex}" class="hide"><strong>Hint:</strong> <em>${question.hint}</em></p>
         </div>
         <div class="col-lg-6">
           ${setupAnswerBtns(currentIndex, question.wordOptions)}
@@ -159,6 +161,17 @@ function setupAnswers (question, currentIndex) {
     </form>
   `);
 
+  // start hint timer
+  startHintTimer(currentIndex);
+
+}
+
+// start timer for hint
+function startHintTimer (currentIndex) {
+  // show hint after 15 seconds
+  setTimeout(function () {
+    $(`#js-hint-${currentIndex}`).removeClass('hide');
+  }, 5000);
 }
 
 // setup question answers
@@ -175,6 +188,7 @@ function setupAnswerBtns (questionIndex, wordOptions) {
 // listen for answers
 function listenForAnswer () {
 
+  // wait for btn clicks on form objects
   $('.questions-block').click( event => {
 
     // save id and value of selected radio button
@@ -206,6 +220,15 @@ function answeredIncorrectly (questionSet, selectedAnswer) {
 
   // hide incorrect answer
   $(`#${selectedAnswer}`).prop('disabled', true);
+
+}
+
+// when user wants to start over
+function listenForStartOverClick () {
+
+  $('.startOverBtn').click(function(){
+    location.reload();
+  });
 
 }
 
