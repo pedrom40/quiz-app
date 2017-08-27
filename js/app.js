@@ -276,7 +276,7 @@ function startHintTimer (currentIndex) {
   // show hint after 15 seconds
   setTimeout(function () {
     $(`#js-hint-${currentIndex}`).removeClass('hide');
-  }, 5000);
+  }, 10000);
 }
 
 // setup question answers
@@ -400,19 +400,17 @@ function setModalContent (answer, selectedAnswer) {
 }
 
 // mark answered questions and if they were correct or wrong
-function trackAnswers (answer, questionSet, selectedAnswer) {
+function trackAnswers (correctAnswer, questionSet, selectedAnswer) {
 
   // mark question as answered
   questionSet.answered = true;
 
-  if (answer){
+  if (correctAnswer){
     questionSet.correct = true;
   }
   else {
     questionSet.correct = false;
   }
-
-  //console.log(questionSet);
 
 }
 
@@ -446,14 +444,37 @@ function showNextQuestion () {
 // get the next question's index to show
 function getNextQuestionIndex () {
 
+  // remove current class from all li's
+  resetStepIndicator();
+
   // loop thru questions block
   for (var i=0; i < questions[currentTheme].length; i++) {
 
     // if current question is unanswered
     if (!questions[currentTheme][i].answered) {
 
+      // add current class to this question
+      setCurrentStepIndicator(i);
+
       // return the index
       return i;
+
+    }
+    else {
+
+      // if correct answer
+      if (questions[currentTheme][i].correct) {
+
+        // add correct class to this question
+        setCorrectStepIndicator(i);
+
+      }
+      else {
+
+        // add correct class to this question
+        setIncorrectStepIndicator(i);
+
+      }
 
     }
 
@@ -464,10 +485,32 @@ function getNextQuestionIndex () {
 
 }
 
+// removes 'current' class from all li's
+function resetStepIndicator () {
+  $('.step-indicator li').removeClass('current');
+}
+
+// sets current class to li
+function setCurrentStepIndicator (indexToSet) {
+  $(`.step-indicator li:nth-child(${indexToSet+1})`).addClass('current');
+}
+
+// sets correct class to li
+function setCorrectStepIndicator (indexToSet) {
+  $(`.step-indicator li:nth-child(${indexToSet+1})`).addClass('correct');
+}
+
+// set incorrect class to li
+function setIncorrectStepIndicator (indexToSet) {
+  $(`.step-indicator li:nth-child(${indexToSet+1})`).addClass('incorrect');
+}
+
 // when all quiz questions answered
 function quizComplete () {
 
-  console.log('all questions answered');
+  $('.questions-view').fadeOut(function(){
+    $('.feedback-view').fadeIn();
+  });
 
 }
 
