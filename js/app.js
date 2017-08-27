@@ -184,9 +184,29 @@ function onThemeSelect () {
   $('#selectTheme').on('change', event => {
     currentTheme = event.target.value;
 
+    initQuestionsView();
     openQuestionsView();
 
   });
+}
+
+// resets HTML in questions view to start fresh
+function initQuestionsView () {
+
+  $('.questions-view').html(`
+    <ul class="step-indicator"></ul>
+
+    <h3>Choose the correct spelling of this <span></span>:</h3>
+
+    <section class="questions-block">
+
+    </section>
+
+    <div class="quick-links">
+      <a href="#" class="startOverBtn">Start Over</a>
+    </div>
+  `);
+
 }
 
 // hides starting view, shows question view
@@ -508,8 +528,120 @@ function setIncorrectStepIndicator (indexToSet) {
 // when all quiz questions answered
 function quizComplete () {
 
+  // calculate total points
+  let finalResults = getQuizResults();
+
+  // if passed
+  if (finalResults[3]) {
+    setPassedResultContent(finalResults);
+  }
+  else {
+    setFailedResultContent(finalResults);
+  }
+
+  // add btns for other quizzes
+  createStartNextQuizBtns();
+
+  // show feedback view
   $('.questions-view').fadeOut(function(){
     $('.feedback-view').fadeIn();
+  });
+
+}
+
+// set passed msg
+function setPassedResultContent (finalResults) {
+  $('.js-results').html(`
+    <h3>YOU PASSED!</h3>
+    <p>
+      You got ${finalResults[1]} out of the ${finalResults[0]} answers right!
+      You're great at spelling ${themes[currentTheme]} correctly. Keep up the good work with our next quiz.
+      Choose another theme below to see if you can pass them all.
+    </p>
+  `);
+}
+
+// set failed msg
+function setFailedResultContent (finalResults) {
+  $('.js-results').html(`
+    <h3>BETTER LUCK NEXT TIME!</h3>
+    <p>
+      You got ${finalResults[1]} out of the ${finalResults[0]} answers correct. That was a good effort,
+      slow down and try the quiz again, or choose a different quiz and come back to it later.
+      Don't give up! You'll get better at ${themes[currentTheme]} with more practice.
+    </p>
+  `);
+}
+
+// create quiz start btns at end of current quiz
+function createStartNextQuizBtns () {
+  themes.map( (theme, index) => {
+
+    if (index !== Number(currentTheme)) {
+      $('.js-other-quiz-links').append(`
+        <a href="#" id="quiz${index}" class="btn btn-default js-start-quiz-btn">Start ${theme} Quiz</a>
+      `);
+    }
+
+  });
+
+  listenForStartNewQuiz();
+
+}
+
+// get total of questions answered correctly in points
+function getQuizResults () {
+
+  // result vars
+  let totalQuestions = 0;
+  let correctAnswers = 0;
+  let incorrectAnswers = 0;
+  let finalResult = false;
+
+  // check each question
+  questions[currentTheme].map( question => {
+
+    // step total questions
+    totalQuestions += 1;
+
+    // for correct answers, add 1
+    if (question.correct) {
+      correctAnswers +=1;
+    }
+
+    // for incorrect answers, add 1
+    else {
+      incorrectAnswers +=1;
+    }
+
+  });
+
+  // calculate final results
+  let pointsPerQuestion = 100 / totalQuestions;
+  let earnedPoints = correctAnswers * pointsPerQuestion;
+  let finalGrade = (earnedPoints / 100) * 100;
+
+  if (finalGrade >= 70) {
+    finalResult = true;
+  }
+
+  return [totalQuestions, correctAnswers, incorrectAnswers, finalResult];
+
+}
+
+// listen for start new quiz request
+function listenForStartNewQuiz () {
+
+  $('.js-start-quiz-btn').click(function(){
+    currentTheme = Number(event.target.id.toString().replace('quiz', ''));
+
+    // show feedback view
+    $('.feedback-view').fadeOut(function(){
+      $('.questions-view').fadeIn();
+    });
+
+    initQuestionsView();
+    openQuestionsView();
   });
 
 }

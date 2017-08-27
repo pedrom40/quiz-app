@@ -24,19 +24,5 @@
   .questions-form .submit-btn input {width:100%;}
 
 /* feedback view */
-.feedback-view .results {margin-bottom:40px;}
-  .feedback-view .results .description {font-size:16px; line-height:26px;}
-.feedback-view .progress {height:70px; width:150px; margin:0 auto;
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-  .feedback-view .progress .progress-bar span {display:inline-block; width:50%; margin-top:16px;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-  }
+.feedback-view {text-align:center;}
+  .feedback-view p {margin-bottom:60px; font-size:16px; line-height:26px;}
