@@ -1,6 +1,6 @@
 'use strict';
 
-// init themes array
+// init themes, questions and tries variables
 const themes = ['Colors', 'Animals', 'Shapes'];
 let currentTheme = undefined;
 const questions = [
@@ -10,14 +10,45 @@ const questions = [
       wordOptions: ['Blue', 'Bloo', 'Blu', 'Bluo'],
       imgSrc: 'http://via.placeholder.com/250x200',
       imgAlt: 'Blue Rectangle',
-      hint: 'There\'s an "E" in the word'
+      hint: 'There\'s an "E" in the word',
+      answered:false,
+      correct:false
     },
     {
       word:'Orange',
       wordOptions: ['Oranje', 'Orang', 'Orange', 'Orenge'],
       imgSrc: 'http://via.placeholder.com/250x200',
       imgAlt: 'Orange Rectangle',
-      hint: 'There\'s an "E" in the word'
+      hint: 'There\'s an "E" in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Brown',
+      wordOptions: ['Browhn', 'Bown', 'Broun', 'Brown'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Brown Rectangle',
+      hint: 'There are 5 letters in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Green',
+      wordOptions: ['Grean', 'Green', 'Greun', 'Grenn'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Green Rectangle',
+      hint: 'There\'s only one "N" in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Yellow',
+      wordOptions: ['Yellow', 'Yello', 'Yeloo', 'Yelow'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Yellow Rectangle',
+      hint: 'There are 2 "L"\'s in the word',
+      answered:false,
+      correct:false
     }
   ],
   [
@@ -26,14 +57,45 @@ const questions = [
       wordOptions: ['Dog', 'Dawg', 'Dug', 'Daag'],
       imgSrc: 'http://via.placeholder.com/250x200',
       imgAlt: 'Dog Picture',
-      hint: 'There\'s an "O" in the word'
+      hint: 'There\'s an "O" in the word',
+      answered:false,
+      correct:false
     },
     {
       word:'Zebra',
       wordOptions: ['Zebrah', 'Zeebra', 'Zebru', 'Zebra'],
       imgSrc: 'http://via.placeholder.com/250x200',
-      imgAlt: 'Orange Rectangle',
-      hint: 'There is only one "E"'
+      imgAlt: 'Zebra Picture',
+      hint: 'There is only one "E" in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Giraffe',
+      wordOptions: ['Geraffe', 'Girafe', 'Giraffe', 'Jiraffe'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Giraffe Picture',
+      hint: 'There are 2 "F"\'s in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Elephant',
+      wordOptions: ['Elephant', 'Elefant', 'Elepant', 'Eliphant'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Elephant Picture',
+      hint: 'There are no "F"\'s in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Horse',
+      wordOptions: ['Horsee', 'Horce', 'Hourse', 'Horse'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Horse Picture',
+      hint: 'There is only one "E"s in the word',
+      answered:false,
+      correct:false
     }
   ],
   [
@@ -42,17 +104,49 @@ const questions = [
       wordOptions: ['Curcle', 'Circle', 'Sircle', 'Circel'],
       imgSrc: 'http://via.placeholder.com/250x200',
       imgAlt: 'Circle Picture',
-      hint: 'There\'s an "I" in the word'
+      hint: 'There\'s an "I" in the word',
+      answered:false,
+      correct:false
     },
     {
       word:'Rectangle',
       wordOptions: ['Rectangle', 'Rectangl', 'Wrectangle', 'Rectangel'],
       imgSrc: 'http://via.placeholder.com/250x200',
       imgAlt: 'Rectangle Rectangle',
-      hint: 'There are two "E"\'s'
+      hint: 'There are two "E"\'s',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Square',
+      wordOptions: ['Sqware', 'Square', 'Sqare', 'Squareh'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Square Rectangle',
+      hint: 'There is a "U" in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Diamond',
+      wordOptions: ['Diamund', 'Diamand', 'Diemond', 'Diamond'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Diamond Rectangle',
+      hint: 'There is an "A" and an "O" in the word',
+      answered:false,
+      correct:false
+    },
+    {
+      word:'Hexagon',
+      wordOptions: ['Hexigon', 'Hexagan', 'Hexagon', 'Hexagone'],
+      imgSrc: 'http://via.placeholder.com/250x200',
+      imgAlt: 'Hexagon Rectangle',
+      hint: 'There is not an "I" in the word',
+      answered:false,
+      correct:false
     }
-  ],
+  ]
 ];
+let tries = 0;
 
 // calls all other functions
 function initApp () {
@@ -67,6 +161,10 @@ function loadThemes () {
     createThemeOptions(theme, currentIndex);
   });
 
+  // activate theme select menu
+  $('#selectTheme').attr('disabled', false);
+
+  // listen for theme selection
   onThemeSelect();
 
 }
@@ -119,8 +217,13 @@ function loadQuestions () {
 
   });
 
+  // wait for an answer
   listenForAnswer();
 
+  // wait for continue click
+  onContinueBtnClick();
+
+  // listen for starting over click
   listenForStartOverClick();
 
 }
@@ -130,6 +233,8 @@ function setupStepIndicator (currentIndex) {
   $('.step-indicator').append(`
     <li>${currentIndex + 1}</li>
   `);
+
+  $('.step-indicator li:first-child').addClass('current');
 }
 
 // setup question
@@ -147,7 +252,7 @@ function setupAnswers (question, currentIndex) {
   }
 
   $('.questions-block').append(`
-    <form class="questions-form${questionClass}">
+    <form id="question${currentIndex}" class="questions-form${questionClass}">
 
       <div class="row question-group">
         <div class="col-lg-6 answer-img">
@@ -191,19 +296,23 @@ function listenForAnswer () {
   // wait for btn clicks on form objects
   $('.questions-block').click( event => {
 
-    // save id and value of selected radio button
-    const questionOption = event.target.id.toString().split('-');
-    const selectedAnswer = event.target.value.toString();
+    if (event.target.type === 'button') {
 
-    // correct answer
-    const correctAnswer = questions[currentTheme][questionOption[0]].word.toString();
+      // save id and value of selected radio button
+      const questionOption = event.target.id.toString().split('-');
+      const selectedAnswer = event.target.value.toString();
 
-    // check answer
-    if (selectedAnswer === correctAnswer){
-      answeredCorrectly(questions[currentTheme][questionOption[0]], correctAnswer);
-    }
-    else {
-      answeredIncorrectly(questions[currentTheme][questionOption[0]], event.target.id);
+      // correct answer
+      const correctAnswer = questions[currentTheme][questionOption[0]].word.toString();
+
+      // check answer
+      if (selectedAnswer === correctAnswer){
+        answeredCorrectly(questions[currentTheme][questionOption[0]], correctAnswer);
+      }
+      else {
+        answeredIncorrectly(questions[currentTheme][questionOption[0]], event.target.id);
+      }
+
     }
 
   });
@@ -218,6 +327,9 @@ function answeredCorrectly (questionSet, selectedAnswer) {
     setModalContent(true, selectedAnswer);
   });
 
+  // track answer
+  trackAnswers(true, questionSet, selectedAnswer);
+
 }
 
 // when incorrect answer is selected
@@ -228,8 +340,11 @@ function answeredIncorrectly (questionSet, selectedAnswer) {
     setModalContent(false, selectedAnswer);
   });
 
-  // hide incorrect answer
+  // disable incorrect answer
   $(`#${selectedAnswer}`).prop('disabled', true);
+
+  // track answer
+  trackAnswers(false, questionSet, selectedAnswer);
 
 }
 
@@ -245,24 +360,114 @@ function setModalContent (answer, selectedAnswer) {
   // if correct answer
   if (answer) {
 
+    // setup correct content
     $('.modal-title').html(correctAnswerTitles[getRandomNumber(correctAnswerTitles.length)]);
-    $('.modal-body').html(`
-      <p><strong>"${selectedAnswer}" is correct!</strong> Move on to the next question and keep up the good work!</p>
-    `);
-    $('.js-continue-btn').html(`Next Question`);
+    $('.modal-body').html(`<p><strong>"${selectedAnswer}" is correct!</strong> Move on to the next question and keep up the good work!</p>`);
+    $('.js-continue-btn').attr('value', 'Next Question');
+
+    // reset tries count
+    tries = 0;
 
   }
 
   // if wrong answer
   else {
 
+    // add a try
+    tries += 1;
+
+    // setup incorrect content
     $('.modal-title').html(incorrectAnswerTitles[getRandomNumber(incorrectAnswerTitles.length)]);
-    $('.modal-body').html(`
-      <p>Sorry, <strong>"${$('#'+selectedAnswer).val()}"</strong> is not correct. Shake it off and try again!</p>
-    `);
-    $('.js-continue-btn').html(`Try Again`);
+    $('.modal-body').html(`<p>Sorry, <strong>"${$('#'+selectedAnswer).val()}"</strong> is not correct. Shake it off and give it another shot!</p>`);
+
+    // if they can try again
+    if (tries <= 2) {
+      $('.js-continue-btn').attr('value', 'Try Again');
+    }
+
+    // if they're out of tries
+    else {
+
+      // reset tries
+      tries = 0;
+
+      // setup next question
+      $('.js-continue-btn').attr('value', 'Next Question');
+    }
 
   }
+
+}
+
+// mark answered questions and if they were correct or wrong
+function trackAnswers (answer, questionSet, selectedAnswer) {
+
+  // mark question as answered
+  questionSet.answered = true;
+
+  if (answer){
+    questionSet.correct = true;
+  }
+  else {
+    questionSet.correct = false;
+  }
+
+  //console.log(questionSet);
+
+}
+
+// listen for click on modal btn
+function onContinueBtnClick () {
+
+  $('.js-continue-btn').click( event => {
+
+    if (event.target.value === 'Next Question') {
+      showNextQuestion();
+    }
+
+  });
+
+}
+
+// shows the next question
+function showNextQuestion () {
+
+  // hide all questions
+  $('.questions-form').addClass('hide');
+
+  // next question index
+  let nextIndex = getNextQuestionIndex();
+
+  // show it
+  $(`#question${nextIndex}`).removeClass('hide');
+
+}
+
+// get the next question's index to show
+function getNextQuestionIndex () {
+
+  // loop thru questions block
+  for (var i=0; i < questions[currentTheme].length; i++) {
+
+    // if current question is unanswered
+    if (!questions[currentTheme][i].answered) {
+
+      // return the index
+      return i;
+
+    }
+
+  }
+
+  // all questions are answered
+  quizComplete();
+
+}
+
+// when all quiz questions answered
+function quizComplete () {
+
+  console.log('all questions answered');
 
 }
 

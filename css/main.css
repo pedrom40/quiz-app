@@ -2,6 +2,9 @@
 .step-indicator {list-style:none; width:375px; margin:25px auto; padding:0; background:url(../img/blk-pixel.gif) center repeat-x;}
   .step-indicator li {display:inline-block; margin-right:40px; padding:10px 15px; border:solid 1px #000; border-radius:50%; background:white;}
   .step-indicator li:last-child {margin-right:0;}
+  .step-indicator li.current {background:orange;}
+  .step-indicator li.correct {color:white; background:green;}
+  .step-indicator li.incorrect {color:white; background:red;}
 .quick-links {margin:25px auto; text-align:center;}
   .quick-links a {margin:0 25px;}
 
