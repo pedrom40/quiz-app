@@ -270,6 +270,9 @@ function setupAnswers (question, currentIndex) {
   if (currentIndex !== 0){
     questionClass = ' hide';
   }
+  else if (currentIndex === 0){
+    startHintTimer(currentIndex);
+  }
 
   $('.questions-block').append(`
     <form id="question${currentIndex}" class="questions-form${questionClass}">
@@ -285,9 +288,6 @@ function setupAnswers (question, currentIndex) {
       </div>
     </form>
   `);
-
-  // start hint timer
-  startHintTimer(currentIndex);
 
 }
 
@@ -506,9 +506,6 @@ function getNextQuestionIndex () {
     // if current question is unanswered
     if (!questions[currentTheme][i].answered) {
 
-      // reset class
-      $(`#js-hint-${i}`).addClass('hide');
-
       // add current class to this question
       setCurrentStepIndicator(i);
 
@@ -548,7 +545,12 @@ function resetStepIndicator () {
 
 // sets current class to li
 function setCurrentStepIndicator (indexToSet) {
+
   $(`.step-indicator li:nth-child(${indexToSet+1})`).addClass('current');
+
+  // reset class
+  startHintTimer(indexToSet);
+
 }
 
 // sets correct class to li
