@@ -529,7 +529,7 @@ function setIncorrectStepIndicator (indexToSet) {
 function quizComplete () {
 
   // calculate total points
-  let finalResults = getQuizResults();
+  let finalResults = getQuizResults(currentTheme);
 
   // if passed
   if (finalResults[3]) {
@@ -575,9 +575,32 @@ function setFailedResultContent (finalResults) {
 
 // create quiz start btns at end of current quiz
 function createStartNextQuizBtns () {
+
+  // start fresh
+  $('.js-other-quiz-links').html('');
+
   themes.map( (theme, index) => {
 
-    if (index !== Number(currentTheme)) {
+    let quizAttempted = hasQuizBeenAttempted(index);console.log(`attempted: ${quizAttempted} - quiz: ${index}`);
+    let quizResults = getQuizResults(index);
+    let quizPassed = quizResults[3];console.log(`passed: ${quizPassed} - quiz: ${index}`);
+
+    // add checkmark to btn
+    if (quizAttempted && quizPassed) {
+      $('.js-other-quiz-links').append(`
+        <a href="#" id="quiz${index}" class="btn btn-default js-start-quiz-btn">${theme} Quiz <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+      `);
+    }
+
+    // add X to btn
+    else if (quizAttempted && !quizPassed) {
+      $('.js-other-quiz-links').append(`
+        <a href="#" id="quiz${index}" class="btn btn-default js-start-quiz-btn">${theme} Quiz <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+      `);
+    }
+
+    // no indicator icons
+    else {
       $('.js-other-quiz-links').append(`
         <a href="#" id="quiz${index}" class="btn btn-default js-start-quiz-btn">Start ${theme} Quiz</a>
       `);
@@ -589,8 +612,28 @@ function createStartNextQuizBtns () {
 
 }
 
+// see if quiz has been attempted
+function hasQuizBeenAttempted (quizIndex) {
+
+  // initially set response to false
+  let quizAttempted = false;
+
+  // loop thru quiz checking answered property
+  questions[quizIndex].map( question => {
+
+    // for correct answers, add 1
+    if (question.answered) {
+      quizAttempted = true;
+    }
+
+  });
+
+  return quizAttempted;
+
+}
+
 // get total of questions answered correctly in points
-function getQuizResults () {
+function getQuizResults (quizIndex) {
 
   // result vars
   let totalQuestions = 0;
@@ -599,7 +642,7 @@ function getQuizResults () {
   let finalResult = false;
 
   // check each question
-  questions[currentTheme].map( question => {
+  questions[quizIndex].map( question => {
 
     // step total questions
     totalQuestions += 1;
@@ -633,7 +676,12 @@ function getQuizResults () {
 function listenForStartNewQuiz () {
 
   $('.js-start-quiz-btn').click(function(){
+
+    // update current theme index
     currentTheme = Number(event.target.id.toString().replace('quiz', ''));
+
+    // reset step indicator
+    $('.step-indicator').html('');
 
     // show feedback view
     $('.feedback-view').fadeOut(function(){
