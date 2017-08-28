@@ -581,9 +581,9 @@ function createStartNextQuizBtns () {
 
   themes.map( (theme, index) => {
 
-    let quizAttempted = hasQuizBeenAttempted(index);console.log(`attempted: ${quizAttempted} - quiz: ${index}`);
+    let quizAttempted = hasQuizBeenAttempted(index);
     let quizResults = getQuizResults(index);
-    let quizPassed = quizResults[3];console.log(`passed: ${quizPassed} - quiz: ${index}`);
+    let quizPassed = quizResults[3];
 
     // add checkmark to btn
     if (quizAttempted && quizPassed) {
@@ -688,9 +688,26 @@ function listenForStartNewQuiz () {
       $('.questions-view').fadeIn();
     });
 
+    resetQuiz(currentTheme);
     initQuestionsView();
     openQuestionsView();
   });
+
+}
+
+// reset quiz properties
+function resetQuiz (quizIndex) {
+
+  // loop thru each question
+  questions[quizIndex].map( question => {
+
+    // reset answered and correct values
+    question.answered = false;
+    question.correct = false;
+
+  });
+
+  console.log(questions[quizIndex]);
 
 }
 
