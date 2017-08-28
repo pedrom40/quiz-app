@@ -293,21 +293,35 @@ function setupAnswers (question, currentIndex) {
 
 // start timer for hint
 function startHintTimer (currentIndex) {
+
   // show hint after 15 seconds
   setTimeout(function () {
     $(`#js-hint-${currentIndex}`).removeClass('hide');
   }, 10000);
+
 }
 
 // setup question answers
 function setupAnswerBtns (questionIndex, wordOptions) {
   let radioOptions = '';
 
+  // shuffle answers
+  shuffleWordOptions(wordOptions);
+
+  // loop through each asnwer
   wordOptions.map( (option, currentIndex) => {
     radioOptions = radioOptions + `<input type="button" id="${questionIndex}-${currentIndex}" value="${option}" class="btn btn-primary btn-lg btn-block">`;
   });
 
   return radioOptions;
+}
+
+// shuffle word options array
+function shuffleWordOptions(a) {
+  for (let i = a.length; i; i--) {
+    let j = Math.floor(Math.random() * i);
+    [a[i - 1], a[j]] = [a[j], a[i - 1]];
+  }
 }
 
 // listen for answers
@@ -342,18 +356,21 @@ function listenForAnswer () {
 // when correct answer is selected
 function answeredCorrectly (questionSet, selectedAnswer) {
 
+  // track answer
+  trackAnswers(true, questionSet, selectedAnswer);
+
   // open modal, set content to true for correct answer
   $('#answerModal').modal().show(function () {
     setModalContent(true, selectedAnswer);
   });
 
-  // track answer
-  trackAnswers(true, questionSet, selectedAnswer);
-
 }
 
 // when incorrect answer is selected
 function answeredIncorrectly (questionSet, selectedAnswer) {
+
+  // track answer
+  trackAnswers(false, questionSet, selectedAnswer);
 
   // open modal, set content to true for correct answer
   $('#answerModal').modal().show(function () {
@@ -362,9 +379,7 @@ function answeredIncorrectly (questionSet, selectedAnswer) {
 
   // disable incorrect answer
   $(`#${selectedAnswer}`).prop('disabled', true);
-
-  // track answer
-  trackAnswers(false, questionSet, selectedAnswer);
+  $(`#${selectedAnswer}`).addClass('btn-danger');
 
 }
 
@@ -383,7 +398,14 @@ function setModalContent (answer, selectedAnswer) {
     // setup correct content
     $('.modal-title').html(correctAnswerTitles[getRandomNumber(correctAnswerTitles.length)]);
     $('.modal-body').html(`<p><strong>"${selectedAnswer}" is correct!</strong> Move on to the next question and keep up the good work!</p>`);
-    $('.js-continue-btn').attr('value', 'Next Question');
+
+    // see if this is the last question
+    if (lastQuestion()) {
+      $('.js-continue-btn').attr('value', 'See Results');
+    }
+    else {
+      $('.js-continue-btn').attr('value', 'Next Question');
+    }
 
     // reset tries count
     tries = 0;
@@ -411,12 +433,23 @@ function setModalContent (answer, selectedAnswer) {
       // reset tries
       tries = 0;
 
-      // setup next question
-      $('.js-continue-btn').attr('value', 'Next Question');
+      // see if this is the last question
+      if (lastQuestion()) {
+        $('.js-continue-btn').attr('value', 'See Results');
+      }
+      else {
+        $('.js-continue-btn').attr('value', 'Next Question');
+      }
+
     }
 
   }
 
+}
+
+// check if we're on the last question
+function lastQuestion () {
+  return questions[currentTheme][questions[currentTheme].length - 1].answered;
 }
 
 // mark answered questions and if they were correct or wrong
@@ -439,7 +472,7 @@ function onContinueBtnClick () {
 
   $('.js-continue-btn').click( event => {
 
-    if (event.target.value === 'Next Question') {
+    if (event.target.value === 'Next Question' || event.target.value === 'See Results') {
       showNextQuestion();
     }
 
@@ -472,6 +505,9 @@ function getNextQuestionIndex () {
 
     // if current question is unanswered
     if (!questions[currentTheme][i].answered) {
+
+      // reset class
+      $(`#js-hint-${i}`).addClass('hide');
 
       // add current class to this question
       setCurrentStepIndicator(i);
@@ -588,14 +624,14 @@ function createStartNextQuizBtns () {
     // add checkmark to btn
     if (quizAttempted && quizPassed) {
       $('.js-other-quiz-links').append(`
-        <a href="#" id="quiz${index}" class="btn btn-default js-start-quiz-btn">${theme} Quiz <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+        <a href="#" id="quiz${index}" class="btn btn-success js-start-quiz-btn">${theme} Quiz <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
       `);
     }
 
     // add X to btn
     else if (quizAttempted && !quizPassed) {
       $('.js-other-quiz-links').append(`
-        <a href="#" id="quiz${index}" class="btn btn-default js-start-quiz-btn">${theme} Quiz <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+        <a href="#" id="quiz${index}" class="btn btn-danger js-start-quiz-btn">${theme} Quiz <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
       `);
     }
 
