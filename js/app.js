@@ -8,7 +8,7 @@ const questions = [
     {
       word:'Blue',
       wordOptions: ['Blue', 'Bloo', 'Blu', 'Bluo'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/color-blue.gif',
       imgAlt: 'Blue Rectangle',
       hint: 'There\'s an "E" in the word',
       answered:false,
@@ -17,7 +17,7 @@ const questions = [
     {
       word:'Orange',
       wordOptions: ['Oranje', 'Orang', 'Orange', 'Orenge'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/color-orange.gif',
       imgAlt: 'Orange Rectangle',
       hint: 'There\'s an "E" in the word',
       answered:false,
@@ -26,7 +26,7 @@ const questions = [
     {
       word:'Brown',
       wordOptions: ['Browhn', 'Bown', 'Broun', 'Brown'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/color-brown.gif',
       imgAlt: 'Brown Rectangle',
       hint: 'There are 5 letters in the word',
       answered:false,
@@ -35,7 +35,7 @@ const questions = [
     {
       word:'Green',
       wordOptions: ['Grean', 'Green', 'Greun', 'Grenn'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/color-green.gif',
       imgAlt: 'Green Rectangle',
       hint: 'There\'s only one "N" in the word',
       answered:false,
@@ -44,7 +44,7 @@ const questions = [
     {
       word:'Yellow',
       wordOptions: ['Yellow', 'Yello', 'Yeloo', 'Yelow'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/color-yellow.gif',
       imgAlt: 'Yellow Rectangle',
       hint: 'There are 2 "L"\'s in the word',
       answered:false,
@@ -55,7 +55,7 @@ const questions = [
     {
       word:'Dog',
       wordOptions: ['Dog', 'Dawg', 'Dug', 'Daag'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/animal-dog.jpg',
       imgAlt: 'Dog Picture',
       hint: 'There\'s an "O" in the word',
       answered:false,
@@ -64,7 +64,7 @@ const questions = [
     {
       word:'Zebra',
       wordOptions: ['Zebrah', 'Zeebra', 'Zebru', 'Zebra'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/animal-zebra.jpg',
       imgAlt: 'Zebra Picture',
       hint: 'There is only one "E" in the word',
       answered:false,
@@ -73,7 +73,7 @@ const questions = [
     {
       word:'Giraffe',
       wordOptions: ['Geraffe', 'Girafe', 'Giraffe', 'Jiraffe'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/animal-giraffe.jpg',
       imgAlt: 'Giraffe Picture',
       hint: 'There are 2 "F"\'s in the word',
       answered:false,
@@ -82,7 +82,7 @@ const questions = [
     {
       word:'Elephant',
       wordOptions: ['Elephant', 'Elefant', 'Elepant', 'Eliphant'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/animal-elephant.jpg',
       imgAlt: 'Elephant Picture',
       hint: 'There are no "F"\'s in the word',
       answered:false,
@@ -91,7 +91,7 @@ const questions = [
     {
       word:'Horse',
       wordOptions: ['Horsee', 'Horce', 'Hourse', 'Horse'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/animal-horse.jpg',
       imgAlt: 'Horse Picture',
       hint: 'There is only one "E"s in the word',
       answered:false,
@@ -102,7 +102,7 @@ const questions = [
     {
       word:'Circle',
       wordOptions: ['Curcle', 'Circle', 'Sircle', 'Circel'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/shape-circle.gif',
       imgAlt: 'Circle Picture',
       hint: 'There\'s an "I" in the word',
       answered:false,
@@ -111,7 +111,7 @@ const questions = [
     {
       word:'Rectangle',
       wordOptions: ['Rectangle', 'Rectangl', 'Wrectangle', 'Rectangel'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/shape-rectangle.gif',
       imgAlt: 'Rectangle Rectangle',
       hint: 'There are two "E"\'s',
       answered:false,
@@ -120,7 +120,7 @@ const questions = [
     {
       word:'Square',
       wordOptions: ['Sqware', 'Square', 'Sqare', 'Squareh'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/shape-square.gif',
       imgAlt: 'Square Rectangle',
       hint: 'There is a "U" in the word',
       answered:false,
@@ -129,7 +129,7 @@ const questions = [
     {
       word:'Diamond',
       wordOptions: ['Diamund', 'Diamand', 'Diemond', 'Diamond'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/shape-diamond.gif',
       imgAlt: 'Diamond Rectangle',
       hint: 'There is an "A" and an "O" in the word',
       answered:false,
@@ -138,7 +138,7 @@ const questions = [
     {
       word:'Hexagon',
       wordOptions: ['Hexigon', 'Hexagan', 'Hexagon', 'Hexagone'],
-      imgSrc: 'http://via.placeholder.com/250x200',
+      imgSrc: './img/shape-hexagon.gif',
       imgAlt: 'Hexagon Rectangle',
       hint: 'There is not an "I" in the word',
       answered:false,
